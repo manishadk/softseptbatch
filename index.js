@@ -6,6 +6,12 @@ var bodyParser = require('body-parser');
 // var userModel = require('./models/UserModel.js')
 var userController = require('./controllers/User_Controller.js')
 
+console.log(userController);
+
+
+
+
+
 
 
 // console.log(db.sequelize);
@@ -17,6 +23,7 @@ var userController = require('./controllers/User_Controller.js')
 
 // setTimeout(function(){
 
+// p
 // if( a === 11){
 // 	resolve('okay, success')
 // }
@@ -65,6 +72,15 @@ var app1 = test()
 
 app1.use(bodyParser.urlencoded({extended:true}))
 
+
+app1.post('/registration',userController.validation,userController.registerUser )
+
+
+
+
+
+
+
 app1.use('/*', function(req,res){
 	res.status(404)
 	res.send('NOT FOUND')
@@ -72,15 +88,15 @@ app1.use('/*', function(req,res){
 
 app1.post('/hotellist',function(req,res,next){
 
-console.log(req.body);
+// console.log(req.body);
 res.status(200);
 
 
 })
 
 app1.get('/hotellist:/id',function(req,res,next){
-console.log(req.params);
-console.log(req.query);
+// console.log(req.params);
+// console.log(req.query);
 req.testvar = {name:'manish'}
 console.log('in first')
 next();
@@ -103,8 +119,18 @@ res.json(data)
 res.status(200).send('sffdf')
 })
 
+// error handlig 1st param err
+app1.use(function(err,req,res,next){
 
-// app1.use(bodyParser)
+console.log(err.message);
+res.json({
+	status:500,
+	message:err.message
+})
+res.send(err.message)
+
+
+})
 
 
 
