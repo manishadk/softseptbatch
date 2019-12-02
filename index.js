@@ -2,10 +2,10 @@
 const test = require('express');
 // console.log(test);
 var bodyParser = require('body-parser');
-
 // var userModel = require('./models/UserModel.js')
 var userController = require('./controllers/User_Controller.js')
 
+var AuthController = require('./controllers/AuthController.js')
 console.log(userController);
 
 
@@ -73,9 +73,9 @@ var app1 = test()
 app1.use(bodyParser.urlencoded({extended:true}))
 
 
-app1.post('/registration',userController.validation,userController.registerUser )
+app1.post('/registration',userController.validation,userController.hashGen,userController.registerUser )
 
-
+app1.post('/login',AuthController.jwtTokenGen)
 
 
 

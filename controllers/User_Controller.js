@@ -1,10 +1,29 @@
 var user = require('../models/UserModel.js')
 
+var bcrypt = require('bcrypt');
+
+
+function hashGen(req,res,next){
+saltRounds = 10; 
+console.log('in has gen');
+bcrypt.hash(req.body.password,saltRounds)
+.then(function(hash){
+	console.log(hash);
+	req.userHash = hash;
+})
+.catch(function(err){
+	next('has gen error')
+})
+
+}
+
+
+
 function validation (req,res,next){
 // console.log(req.body.username);
 
 user.findOne({
-	where:{usernamee:req.body.username}
+	where:{username:req.body.username}
 })
 .then(function(result){
 // console.log(result);
@@ -38,12 +57,16 @@ function registerUser (req,res,next){
 console.log(req.body);
 user.create({
 username:req.body.username,
-password:req.body.password
+password:req.userHash
 
 })
 .then(function(result){
 
 // console.log(result);
+res.json({
+	satus:201,
+	message:"You have regisr"
+})
 })
 .catch(function(err){
 console.log(err)
@@ -52,9 +75,15 @@ next(err);
 
 }
 
+function jwtTokenGen(){
+
+}
+
+
 module.exports = {
 	registerUser,
-	validation
+	validation,
+	hashGen
 }
 
 
