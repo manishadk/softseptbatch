@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 var userController = require('./controllers/User_Controller.js')
 
 var AuthController = require('./controllers/AuthController.js')
-console.log(userController);
+// console.log(userController);
 
 
 
@@ -75,9 +75,10 @@ app1.use(bodyParser.urlencoded({extended:true}))
 
 app1.post('/registration',userController.validation,userController.hashGen,userController.registerUser )
 
-app1.post('/login',AuthController.jwtTokenGen)
+app1.post('/login',AuthController.validator,AuthController.passwordCheck,AuthController.jwtTokenGen)
 
-
+app1.get('/userslist',AuthController.verfiyToken)
+// app1.delete('userdelte')
 
 
 
@@ -93,6 +94,8 @@ res.status(200);
 
 
 })
+
+
 
 app1.get('/hotellist:/id',function(req,res,next){
 // console.log(req.params);
@@ -122,7 +125,7 @@ res.status(200).send('sffdf')
 // error handlig 1st param err
 app1.use(function(err,req,res,next){
 
-console.log(err.message);
+console.log(err);
 res.json({
 	status:500,
 	message:err.message

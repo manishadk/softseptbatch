@@ -10,6 +10,7 @@ bcrypt.hash(req.body.password,saltRounds)
 .then(function(hash){
 	console.log(hash);
 	req.userHash = hash;
+	next();
 })
 .catch(function(err){
 	next('has gen error')
@@ -80,10 +81,19 @@ function jwtTokenGen(){
 }
 
 
+function getAllUsers(req,res,next){
+
+	// send all users from db
+
+	// user.findAll()
+	// .then()
+}
+
 module.exports = {
 	registerUser,
 	validation,
-	hashGen
+	hashGen,
+	getAllUsers
 }
 
 
