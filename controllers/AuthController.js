@@ -69,9 +69,23 @@ jwt.sign(payloadd, 'thisisSecretKey'
 }
 
 function verfiyToken(req,res,next){
-	// req.headers.Auth
+	
+	if(req.headers.authorization === null){
+		res.json({status:401,message:"Unauthorized"})
+			}
+
 	console.log(req.headers.authorization);
-	jwt.verify(token,'thisisSecretKey',)
+	var token = req.headers.authorization.slice(7,req.headers.authorization.length)
+
+	jwt.verify(token,'thisisSecretKey',function(err,result){
+		console.log(err);
+		console.log(result);
+
+		//check result then next to another middleware
+
+		next()
+	
+	})
 
 //token verify 
 // next()

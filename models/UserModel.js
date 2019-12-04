@@ -15,12 +15,17 @@ username: {
 password: {
 	type:db.Sequelize.TEXT ,
 	allowNull:false
+},
+address:{
+	type:db.Sequelize.TEXT ,
+	allowNull:false
 }
 },
 {
 
 freezeTableName: true,
-tableName:'user_tables_2'
+tableName:'user_tables_2',
+paranoid:true
 
 }
 )

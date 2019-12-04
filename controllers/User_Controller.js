@@ -58,7 +58,8 @@ function registerUser (req,res,next){
 console.log(req.body);
 user.create({
 username:req.body.username,
-password:req.userHash
+password:req.userHash,
+address:req.body.address
 
 })
 .then(function(result){
@@ -89,11 +90,37 @@ function getAllUsers(req,res,next){
 	// .then()
 }
 
+function deleteUser(req,res,next){
+
+user.destroy({
+	where: {
+		id:req.params.id
+	}
+})
+.then(function(result){
+	if(result === 0 ){
+		res.json({status:404,message:'user not found'})
+	}
+	else{
+
+	}
+	console.log(result);
+	res.json(result)
+
+})
+.catch(function(err){
+next(err);
+})
+
+
+}
+
 module.exports = {
 	registerUser,
 	validation,
 	hashGen,
-	getAllUsers
+	getAllUsers,
+	deleteUser
 }
 
 

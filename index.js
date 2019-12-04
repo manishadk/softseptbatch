@@ -77,8 +77,16 @@ app1.post('/registration',userController.validation,userController.hashGen,userC
 
 app1.post('/login',AuthController.validator,AuthController.passwordCheck,AuthController.jwtTokenGen)
 
-app1.get('/userslist',AuthController.verfiyToken)
-// app1.delete('userdelte')
+// app1.get('/userslist',AuthController.verfiyToken)
+// // app1.delete('userdelte')
+
+app1.delete('/users/:id',userController.deleteUser)
+
+app1.post('/users')
+
+
+
+
 
 
 
