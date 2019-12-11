@@ -38,7 +38,8 @@ next();
 else{
 
 console.log('user was already registered');
-res.send('You are already registered')
+res.status(409);
+res.json({status:409, message:'You are already registered'});
 
 }
 
@@ -65,9 +66,10 @@ address:req.body.address
 .then(function(result){
 
 // console.log(result);
+res.status(201);
 res.json({
-	satus:201,
-	message:"You have regisr"
+	status:201,
+	message:"You have registered"
 })
 })
 .catch(function(err){
@@ -91,7 +93,9 @@ function getAllUsers(req,res,next){
 }
 
 function deleteUser(req,res,next){
-
+if(req.params.id === null || undefined){
+	res.json({status:500, message:'ID is not provided'})
+}
 user.destroy({
 	where: {
 		id:req.params.id
@@ -105,7 +109,8 @@ user.destroy({
 
 	}
 	console.log(result);
-	res.json(result)
+	res.status(200)
+	res.json({status:200, message:'succesfully deleted'})
 
 })
 .catch(function(err){
@@ -115,12 +120,51 @@ next(err);
 
 }
 
+
+function updateUser(req,res,next){
+	
+	user.update({
+		address:req.body.address,
+		username:req.body.username
+	},{
+		where:{
+			id:req.params.id
+		}
+	})
+	.then(function(result){
+		if(result === 0 ){
+			res.json({status:404,message:'User not found, so not updated'})
+		}
+		else{
+			res.json({status:200,message:'User updated'})
+
+		}
+	})
+.catch(function(err){
+	res.json({status:500,message:'Error updating user !'})
+})
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
 module.exports = {
 	registerUser,
 	validation,
 	hashGen,
 	getAllUsers,
-	deleteUser
+	deleteUser,
+	updateUser
 }
 
 

@@ -1,90 +1,118 @@
 "use strict";
+
 const test = require('express');
-// console.log(test);
+var app1 = test();
+
+
+var swaggerJSDoc = require('swagger-jsdoc') // actual documentation
+var swaggerUI = require('swagger-ui-express') // for viewing the documentation
+
+var swaggerDefinition = {
+info: {
+	title:'myAppliation',
+	version:'0.0.1',
+	description:'This xyz'
+},
+securityDefinitions: {
+	bearerAuth: {
+		type: 'apiKey',
+		name:'authorization',
+		scheme: 'bearer',
+		in: 'header'
+	}
+},
+host:'localhost:3023',
+basePath:'/'
+}
+
+var swaggerOptions = {
+	swaggerDefinition,
+	apis:['./index.js']
+}
+var swaggerSpecs = swaggerJSDoc(swaggerOptions);
+app1.use('/api-docs',swaggerUI.serve, swaggerUI.setup(swaggerSpecs))
+ 
+
+
+
+
+
 var bodyParser = require('body-parser');
-// var userModel = require('./models/UserModel.js')
 var userController = require('./controllers/User_Controller.js')
 
 var AuthController = require('./controllers/AuthController.js')
-// console.log(userController);
-
-
-
-
-
-
-
-// console.log(db.sequelize);
-
-
-// var a =10;
-
-// var promiseVal = new Promise(function(resolve,reject){
-
-// setTimeout(function(){
-
-// p
-// if( a === 11){
-// 	resolve('okay, success')
-// }
-// else{
-// 	reject('failure')
-// }
-
-// },3000)
-
-
-
-
-
-
-
-
-// })
-
-// console.log(promiseVal);
-// promiseVal.then(function(result){
-// console.log(result);
-// })
-// .catch(function(err){
-// 	console.log(err);
-// })
-// .finally(function(){
-
-// 	console.log('in finally')
-// })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var app1 = test()
 
 app1.use(bodyParser.urlencoded({extended:true}))
 
 
+/**
+* @swagger
+* /registration:
+*  post:
+*   tags:
+*    - Users
+*   description: Testing
+*   produces:
+*    - application/json
+*   consumes:
+*    - application/x-www-form-urlencoded
+*   parameters:
+*    - name: username
+*      in: formData
+*      type: string
+*      required: true
+*      description: This is username to be entered
+*    - name: password
+*      in: formData
+*      type: string
+*      required: true
+*      description: password to be entered
+*    - name: address
+*      in: formData
+*      type: string
+*      required: true
+*      description: enter address
+*   responses:
+*    201:
+*     description: registered succcesfully
+*    409:
+*     description: already registered
+*    500:
+*     description: Internal Server Error
+*/
 app1.post('/registration',userController.validation,userController.hashGen,userController.registerUser )
+
+
 
 app1.post('/login',AuthController.validator,AuthController.passwordCheck,AuthController.jwtTokenGen)
 
-// app1.get('/userslist',AuthController.verfiyToken)
-// // app1.delete('userdelte')
+/**
+* @swagger
+* /users/{id}:
+*  delete:
+*   tags:
+*    - Users
+*   security:
+*    - bearerAuth: []
+*   description: This is for delete
+*   produces:
+*    - application/json
+*   parameters:
+*    - name: id
+*      in: path
+*   responses:
+*    200:
+*     description: sucessfully deleted
+*    404:
+*     description: user not found
+*    500:
+*     description: Internal Server Error
+*/
+app1.delete('/users/:id',AuthController.verfiyToken, userController.deleteUser)
 
-app1.delete('/users/:id',userController.deleteUser)
+app1.put('/users/:id',AuthController.verfiyToken,userController.updateUser)
 
-app1.post('/users')
-
-
+// app1.get('/users',)
 
 
 
