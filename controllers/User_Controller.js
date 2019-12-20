@@ -69,7 +69,7 @@ address:req.body.address
 res.status(201);
 res.json({
 	status:201,
-	message:"You have registered"
+	message:"You have been registered succesfully"
 })
 })
 .catch(function(err){
@@ -93,16 +93,24 @@ function getAllUsers(req,res,next){
 }
 
 function deleteUser(req,res,next){
-if(req.params.id === null || undefined){
+	console.log(req.params.id)
+
+if(req.params.id === null){
+	// console.log('asdadsasdasdasdasdasdasd')
+	res.status(500);
 	res.json({status:500, message:'ID is not provided'})
 }
-user.destroy({
+else{
+
+	user.destroy({
 	where: {
 		id:req.params.id
 	}
 })
 .then(function(result){
+	console.log(result+'asdadsasdasdasdasdasdasd')
 	if(result === 0 ){
+		res.status(404);
 		res.json({status:404,message:'user not found'})
 	}
 	else{
@@ -116,6 +124,9 @@ user.destroy({
 .catch(function(err){
 next(err);
 })
+
+}
+
 
 
 }

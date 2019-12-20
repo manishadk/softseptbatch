@@ -82,6 +82,7 @@ app1.use(bodyParser.urlencoded({extended:true}))
 */
 app1.post('/registration',userController.validation,userController.hashGen,userController.registerUser )
 
+app1.post('/registration',userController.validation,userController.hashGen,userController.registerUser )
 
 
 app1.post('/login',AuthController.validator,AuthController.passwordCheck,AuthController.jwtTokenGen)
@@ -162,11 +163,12 @@ res.status(200).send('sffdf')
 app1.use(function(err,req,res,next){
 
 console.log(err);
+res.status(500)
 res.json({
 	status:500,
 	message:err.message
 })
-res.send(err.message)
+// res.send(err.message)
 
 
 })
@@ -174,4 +176,6 @@ res.send(err.message)
 
 
 app1.listen(3023);
+
+module.exports = app1;
 
