@@ -16,7 +16,7 @@ describe('Users',function(){
 			.post('/registration')
 			.set('content-type','application/x-www-form-urlencoded')
 			.send({
-				username:'xyz',
+				username:'xyasdz',
 				password:'xyz',
 				address:'xyz'
 			})
