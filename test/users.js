@@ -18,7 +18,7 @@ describe('Users',function(){
 			.send({
 				username:'xyasdz',
 				password:'xyz',
-				address:'xyz'
+				address:'xyz123123'
 			})
 			.end(function(err,res){
 
